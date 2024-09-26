@@ -1,4 +1,4 @@
-export const getTable = () => {
+export const getTable = async () => {
     return [
         {
             id: 1,
