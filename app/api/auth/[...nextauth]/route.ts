@@ -14,7 +14,7 @@ const handler = NextAuth({
         CredentialsProvider({
             type: 'credentials',
             credentials: {},
-            async authorize(credentials, req) {
+            async authorize(credentials) {
                 const {username, password} = credentials as { username: string, password: string };
                 const response = await loginUser(username, password);
                 if (response.ok) {

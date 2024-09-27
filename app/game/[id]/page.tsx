@@ -19,7 +19,7 @@ const TeamTable = () => {
     const [teams, setTeams] = useState<Team[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [showAddPlayerModal, setShowAddPlayerModal] = useState(false);
-    const [showEnterScoresModal, setShowEnterScoresModal] = useState(false);
+    const [setShowEnterScoresModal] = useState(false);
     const params = useParams();
 
     useEffect(() => {
@@ -40,7 +40,6 @@ const TeamTable = () => {
     };
 
     const handleCloseAddPlayerModal = () => setShowAddPlayerModal(false);
-    const handleCloseEnterScoresModal = () => setShowEnterScoresModal(false);
 
     if (isLoading) {
         return (
