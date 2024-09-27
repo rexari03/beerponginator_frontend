@@ -1,7 +1,7 @@
 "use client"
 
 import {useEffect, useState} from "react";
-import {getAllMatches} from "@/handler/matchService";
+import {addMatchScore, getAllMatches} from "@/handler/matchService";
 import {useParams} from "next/navigation";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -64,15 +64,12 @@ const MatchPage = () => {
         setSelectedMatch(null);
     };
 
-    const handleSaveScores = () => {
-        // Save the scores logic here, including the overtime status
-        console.log({
-            match: selectedMatch,
-            team1Score,
-            team2Score,
-            isOvertime
-        });
-        handleCloseEnterScoresModal();
+    const handleSaveScores = async () => {
+        const result = await addMatchScore(selectedMatch!.id, team1Score, team2Score, isOvertime);
+        if (result.ok) {
+            console.log(result);
+            handleCloseEnterScoresModal();
+        }
     };
 
     return (
