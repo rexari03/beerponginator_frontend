@@ -2,6 +2,9 @@ import type {Metadata} from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import NavBar from "@/components/navbar";
+import SessionWrapper from "@/components/sessionWrapper";
+import {TournamentProvider} from "@/context/tournamentProvider";
 
 const geistSans = localFont({
     src: "./game/fonts/GeistVF.woff",
@@ -25,10 +28,15 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html lang="de">
-        <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        {children}
-        </body>
-        </html>
+        <SessionWrapper>
+            <TournamentProvider>
+                <html lang="de">
+                <body className={`${geistSans.variable} ${geistMono.variable}`}>
+                <NavBar/>
+                {children}
+                </body>
+                </html>
+            </TournamentProvider>
+        </SessionWrapper>
     );
 }
