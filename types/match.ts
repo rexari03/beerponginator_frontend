@@ -8,4 +8,6 @@ export type Match = {
     }
     team_1: Team;
     team_2: Team;
+    team_1_points: number;
+    team_2_points: number;
 }

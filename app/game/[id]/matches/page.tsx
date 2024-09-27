@@ -112,6 +112,7 @@ const MatchPage = () => {
                                 <th>Division</th>
                                 <th>Team1</th>
                                 <th>Team2</th>
+                                <th>Punktestand</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -121,6 +122,7 @@ const MatchPage = () => {
                                     <td>{match.division.number}</td>
                                     <td>{match.team_1.name}</td>
                                     <td>{match.team_2.name}</td>
+                                    <td>{match.team_1_points} - {match.team_2_points}</td>
                                 </tr>
                             ))}
                             </tbody>
