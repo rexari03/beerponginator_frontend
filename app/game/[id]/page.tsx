@@ -19,7 +19,6 @@ const TeamTable = () => {
     const [teams, setTeams] = useState<Team[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [showAddPlayerModal, setShowAddPlayerModal] = useState(false);
-    const [setShowEnterScoresModal] = useState(false);
     const params = useParams();
 
     useEffect(() => {
