@@ -32,8 +32,6 @@ const NavBar = () => {
                                 <Nav.Link href={`/game/`}
                                           className={pathname == `/game/` ? "active" : ""}>Turnier
                                     Übersicht</Nav.Link>
-                                <Nav.Link href={`/dashboard/${session.user!.name}/table`}
-                                          className={pathname == `/game/${session.user!.name}/table` ? "active" : ""}>Rangliste</Nav.Link>
                                 <Nav.Link onClick={() => signOut({callbackUrl: '/'})}>Abmelden</Nav.Link>
                             </>
                             :
