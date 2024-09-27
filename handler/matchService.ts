@@ -29,8 +29,8 @@ export const addMatchScore = async (
 
     const body = JSON.stringify({
         "match_id": match_id,
-        "team1_score": team1_score,
-        "team2_score": team2_score,
+        "team_1_points": team1_score,
+        "team_2_points": team2_score,
         "time_play": time_play
     });
 
