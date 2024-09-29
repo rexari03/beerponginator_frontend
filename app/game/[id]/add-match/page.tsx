@@ -108,7 +108,7 @@ const MatchPage = () => {
                         <Form.Control
                             type="text"
                             value={team1ShownId}
-                            onChange={(e) => handleShownIdChange(e, setTeam1ShownId, setTeamName1, setShowTooltip1)}
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleShownIdChange(e, setTeam1ShownId, setTeamName1, setShowTooltip1)}
                             ref={target1}
                         />
                         <Overlay target={target1.current} show={showTooltip1} placement="bottom"
@@ -125,7 +125,7 @@ const MatchPage = () => {
                         <Form.Control
                             type="text"
                             value={team2ShownId}
-                            onChange={(e) => handleShownIdChange(e, setTeam2ShownId, setTeamName2, setShowTooltip2)}
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleShownIdChange(e, setTeam2ShownId, setTeamName2, setShowTooltip2)}
                             ref={target2}
                         />
                         <Overlay target={target2.current} show={showTooltip2} placement="bottom"
