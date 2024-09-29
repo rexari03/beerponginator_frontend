@@ -1,6 +1,6 @@
 "use client"
 
-import {useEffect, useRef, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {Button, Container, Form, Overlay, Spinner, Tooltip} from "react-bootstrap";
 import {Team} from "@/types/teams";
 import {getTeamsByTournament} from "@/handler/teamService";
@@ -53,7 +53,12 @@ const MatchPage = () => {
         fetchData();
     }, []);
 
-    const handleShownIdChange = (e, setShownId, setTeamName, setShowTooltip) => {
+    const handleShownIdChange = (
+        e: React.ChangeEvent<HTMLInputElement>,
+        setShownId: React.Dispatch<React.SetStateAction<string>>,
+        setTeamName: React.Dispatch<React.SetStateAction<string>>,
+        setShowTooltip: React.Dispatch<React.SetStateAction<boolean>>
+    ) => {
         const value = e.target.value;
         setShownId(value);
         const regex = new RegExp(`^${value}$`, 'i');
@@ -70,14 +75,14 @@ const MatchPage = () => {
         return team1ShownId && team2ShownId && table && division && matchRound;
     };
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const regex1 = new RegExp(`^${team1ShownId}$`, 'i');
         const team1UUID = teams.find(team => regex1.test(team.shown_id))!.id;
 
         const regex2 = new RegExp(`^${team2ShownId}$`, 'i');
         const team2UUID = teams.find(team => regex2.test(team.shown_id))!.id;
-        const response = await addMatch(params.id as string, table, team1UUID, team2UUID, division, matchRound);
+        const response: boolean = await addMatch(params.id as string, table, team1UUID, team2UUID, division, matchRound);
 
         if (response) {
             console.log("Match added successfully");
