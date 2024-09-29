@@ -16,7 +16,7 @@ import Col from 'react-bootstrap/Col';
 import Link from 'next/link';
 import {addTeam} from "@/handler/teamService";
 import {getTournament, updateTournament} from "@/handler/tournamentService";
-import TournamentOverview from "@/components/TournamentOverview";
+import TournamentOverview from "@/components/tournamentOverview";
 
 const TeamTable = () => {
     const [teams, setTeams] = useState<Team[]>([]);
