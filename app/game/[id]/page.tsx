@@ -15,27 +15,46 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Link from 'next/link';
 import {addTeam} from "@/handler/teamService";
+import {getTournament, updateTournament} from "@/handler/tournamentService";
+import TournamentOverview from "@/components/TournamentOverview";
 
 const TeamTable = () => {
     const [teams, setTeams] = useState<Team[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [showAddPlayerModal, setShowAddPlayerModal] = useState(false);
+    const [showEditTournamentModal, setShowEditTournamentModal] = useState(false);
     const [visibleId, setVisibleId] = useState('');
     const [teamName, setTeamName] = useState('');
     const [description, setDescription] = useState('');
+    const [tournamentName, setTournamentName] = useState('');
+    const [tournamentDate, setTournamentDate] = useState('');
+    const [matchRoundCount, setMatchRoundCount] = useState(0);
+    const [tableCount, setTableCount] = useState(0);
+    const [divisionCount, setDivisionCount] = useState(0);
+    const [searchQuery, setSearchQuery] = useState('');
     const params = useParams();
 
     const fetchTable = async () => {
         const teamsTable: Team[] = await getTeams(params.id as string);
-        setTeams(teamsTable);
-        setIsLoading(false);
+        const teamsWithIndex = teamsTable.map((team, index) => ({...team, originalIndex: index + 1}));
+        setTeams(teamsWithIndex);
     };
+
+    const getTournamentDetails = async () => {
+        const tournamentDetails = await getTournament(params.id as string);
+        setTournamentName(tournamentDetails.name);
+        setTournamentDate(tournamentDetails.date);
+        setMatchRoundCount(tournamentDetails.match_round_count ?? 0);
+        setTableCount(tournamentDetails.table_count ?? 0);
+        setDivisionCount(tournamentDetails.division_count ?? 0);
+    }
 
     useEffect(() => {
         fetchTable();
+        getTournamentDetails();
 
         const intervalId = setInterval(fetchTable, 30000);
-
+        setIsLoading(false);
         return () => clearInterval(intervalId);
     }, [params.id]);
 
@@ -43,15 +62,26 @@ const TeamTable = () => {
         setShowAddPlayerModal(true);
     };
 
+    const handleEditTournament = () => {
+        setShowEditTournamentModal(true);
+    };
+
     const handleCloseAddPlayerModal = async () => {
         const response = await addTeam(visibleId, teamName, params.id as string, description);
         if (response.ok) {
-            const data = await response.json();
-            console.log(data);
             setShowAddPlayerModal(false);
             fetchTable();
         }
     }
+
+    const handleCloseEditTournamentModal = async () => {
+        await updateTournament(params.id as string, tournamentName, tournamentDate, matchRoundCount, tableCount);
+
+        setShowEditTournamentModal(false);
+        getTournamentDetails();
+    }
+
+    const filteredTeams = teams.filter(team => team.name.toLowerCase().includes(searchQuery.toLowerCase()));
 
     if (isLoading) {
         return (
@@ -80,9 +110,34 @@ const TeamTable = () => {
             <Row className="mb-4">
                 <Col className="d-flex justify-content-center">
                     <Button variant="primary" onClick={handleAddPlayer} className="me-2">Add Player</Button>
+                    <Button variant="secondary" onClick={handleEditTournament} className="me-2">Edit Tournament</Button>
                     <Link href={`/game/${params.id}/matches`} passHref>
-                        <Button variant="secondary">Enter Scores</Button>
+                        <Button variant="secondary" className="me-2">Enter Scores</Button>
                     </Link>
+                    <Link href={`/game/${params.id}/add-match`} passHref>
+                        <Button variant="success">Add Match</Button>
+                    </Link>
+                </Col>
+            </Row>
+            <Row className="mb-4">
+                <Col>
+                    <TournamentOverview
+                        name={tournamentName}
+                        date={tournamentDate}
+                        matchRoundCount={matchRoundCount}
+                        tableCount={tableCount}
+                        divisionCount={divisionCount}
+                    />
+                </Col>
+            </Row>
+            <Row className="mb-4">
+                <Col>
+                    <Form.Control
+                        type="text"
+                        placeholder="Search by team name"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                    />
                 </Col>
             </Row>
             <Row>
@@ -93,15 +148,19 @@ const TeamTable = () => {
                             <th>Platzierung</th>
                             <th>TeamID</th>
                             <th>Name</th>
-                            <th>Siege</th>
+                            <th>Differenz</th>
+                            <th>Cups getroffen</th>
+                            <th>Punkte</th>
                         </tr>
                         </thead>
                         <tbody>
-                        {teams.map((team, index) => (
-                            <tr key={index}>
-                                <td>{index + 1}</td>
-                                <td>{team.id}</td>
+                        {filteredTeams.map((team) => (
+                            <tr key={team.id}>
+                                <td>{team.originalIndex}</td>
+                                <td>{team.shown_id}</td>
                                 <td>{team.name}</td>
+                                <td>{team.point_difference}</td>
+                                <td>{`${team.points_made} : ${team.points_received}`}</td>
                                 <td>{team.wins}</td>
                             </tr>
                         ))}
@@ -151,6 +210,58 @@ const TeamTable = () => {
                         Close
                     </Button>
                     <Button variant="primary" onClick={handleCloseAddPlayerModal}>
+                        Save Changes
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+
+            {/* Edit Tournament Modal */}
+            <Modal show={showEditTournamentModal} onHide={() => setShowEditTournamentModal(false)}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Edit Tournament</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <Form>
+                        <Form.Group controlId="formTournamentName">
+                            <Form.Label>Turniername</Form.Label>
+                            <Form.Control
+                                type="text"
+                                placeholder="Enter tournament name"
+                                value={tournamentName}
+                                onChange={(e) => setTournamentName(e.target.value)}
+                            />
+                        </Form.Group>
+                        <Form.Group controlId="formTournamentDate" className="mt-3">
+                            <Form.Label>Datum</Form.Label>
+                            <Form.Control
+                                type="date"
+                                value={tournamentDate}
+                                onChange={(e) => setTournamentDate(e.target.value)}
+                            />
+                        </Form.Group>
+                        <Form.Group controlId="formTournamentMatchRoundCount" className="mt-3">
+                            <Form.Label>Spielrunden</Form.Label>
+                            <Form.Control
+                                type="number"
+                                value={matchRoundCount}
+                                onChange={(e) => setMatchRoundCount(Number(e.target.value))}
+                            />
+                        </Form.Group>
+                        <Form.Group controlId="formTournamentTableCount" className="mt-3">
+                            <Form.Label>Anzahl Tische</Form.Label>
+                            <Form.Control
+                                type="number"
+                                value={tableCount}
+                                onChange={(e) => setTableCount(Number(e.target.value))}
+                            />
+                        </Form.Group>
+                    </Form>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={() => setShowEditTournamentModal(false)}>
+                        Close
+                    </Button>
+                    <Button variant="primary" onClick={handleCloseEditTournamentModal}>
                         Save Changes
                     </Button>
                 </Modal.Footer>

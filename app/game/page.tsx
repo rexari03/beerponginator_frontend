@@ -36,27 +36,29 @@ export default function Page() {
     return (
         <div>
             {tournaments.length > 0 ? (
-                <>
-                    <Table striped bordered hover>
-                        <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Name</th>
-                            <th>Datum</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {tournaments.map((tournament, index) => (
-                            <tr key={index} onClick={() => router.push(`/game/${tournament.id}`)}>
-                                <td>{tournament.id}</td>
-                                <td>{tournament.name}</td>
-                                <td>{tournament.date}</td>
+                    <>
+                        <Table striped bordered hover>
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Datum</th>
                             </tr>
-                        ))}
-                        </tbody>
-                    </Table>
-                </>
-            ) : null}
+                            </thead>
+                            <tbody>
+                            {tournaments.map((tournament, index) => (
+                                <tr key={index} onClick={() => router.push(`/game/${tournament.id}`)}>
+                                    <td>{tournament.id}</td>
+                                    <td>{tournament.name}</td>
+                                    <td>{tournament.date}</td>
+                                </tr>
+                            ))}
+                            </tbody>
+                        </Table>
+                    </>
+                ) :
+                <Alert variant="info">No tournaments found.</Alert>
+            }
         </div>
     );
 }

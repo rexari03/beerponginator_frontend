@@ -10,4 +10,10 @@ export type Match = {
     team_2: Team;
     team_1_points: number;
     team_2_points: number;
+    match_round: MatchRound;
+}
+
+type MatchRound = {
+    id: string;
+    number: number;
 }

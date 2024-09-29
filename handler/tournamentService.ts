@@ -1,10 +1,10 @@
+import {Tournament} from "@/types/tournament";
+
 export const addNewTournament = async (
     name: string,
     description: string,
     date: string,
-    sets: number,
-    match_round_count: number,
-    table_count: number
+    sets: number
 ) => {
     const headers = {
         'Authorization': `Bearer XongXina`,
@@ -13,9 +13,7 @@ export const addNewTournament = async (
         "name": name,
         "description": description,
         "date": date,
-        "sets": sets,
-        "match_round_count": match_round_count,
-        "table_count": table_count
+        "sets": sets
     });
 
     const response = await fetch('https://beerpong.philipptrashman.dev/api/tournaments', {
@@ -38,7 +36,9 @@ export const getTournament = async (
         headers,
         mode: 'cors'
     });
-    return response;
+    const data = await response.json();
+    return data as Tournament;
+
 }
 
 export const getTournaments = async () => {
@@ -48,6 +48,35 @@ export const getTournaments = async () => {
     const response = await fetch('https://beerpong.philipptrashman.dev/api/tournaments', {
         method: 'GET',
         headers,
+        mode: 'cors'
+    });
+    if (response.ok) {
+        return await response.json();
+    }
+    throw new Error(response.statusText);
+}
+
+export const updateTournament = async (
+    id: string,
+    name: string,
+    date: string,
+    matchRoundCount: number,
+    tableCount: number
+) => {
+    const headers = {
+        'Authorization': `Bearer ${process.env.NEXT_PUBLIC_AUTH_TOKEN}`,
+    };
+    const body = JSON.stringify({
+        "name": name,
+        "date": date,
+        "match_round_count": matchRoundCount,
+        "table_count": tableCount
+    });
+
+    const response = await fetch(`https://beerpong.philipptrashman.dev/api/tournaments/${id}`, {
+        method: 'PUT',
+        headers,
+        body,
         mode: 'cors'
     });
     if (response.ok) {

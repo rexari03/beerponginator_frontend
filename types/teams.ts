@@ -8,4 +8,8 @@ export type Team = {
     players: Player[],
     tournament: Tournament,
     wins: number,
+    point_difference: number,
+    points_made: number,
+    points_received: number,
+    originalIndex: undefined | number
 }

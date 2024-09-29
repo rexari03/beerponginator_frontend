@@ -19,6 +19,8 @@ const MatchPage = () => {
     const [divisionNumber, setDivisionNumber] = useState<string>("");
     const [divisionNumbers, setDivisionNumbers] = useState<string[]>([]);
     const [searchQuery, setSearchQuery] = useState<string>("");
+    const [selectedMatchRound, setSelectedMatchRound] = useState<number | null>(null);
+    const [matchRounds, setMatchRounds] = useState<number[]>([]);
     const [showEnterScoresModal, setShowEnterScoresModal] = useState(false);
     const [selectedMatch, setSelectedMatch] = useState<Match | null>(null);
     const [team1Score, setTeam1Score] = useState<number>(0);
@@ -31,6 +33,8 @@ const MatchPage = () => {
         setFilteredMatches(m);
         const divisions = Array.from(new Set(m.map(match => match.division.number.toString())));
         setDivisionNumbers(divisions);
+        const rounds = Array.from(new Set(m.map(match => match.match_round.number)));
+        setMatchRounds(rounds);
     }
 
     useEffect(() => {
@@ -51,10 +55,16 @@ const MatchPage = () => {
             );
         }
 
+        if (selectedMatchRound !== null) {
+            filtered = filtered.filter(match => match.match_round.number === selectedMatchRound);
+        }
+
         setFilteredMatches(filtered);
-    }, [divisionNumber, searchQuery, matches]);
+    }, [divisionNumber, searchQuery, selectedMatchRound, matches]);
 
     const handleOpenEnterScoresModal = (match: Match) => {
+        setTeam1Score(match.team_1_points);
+        setTeam2Score(match.team_2_points);
         setSelectedMatch(match);
         setShowEnterScoresModal(true);
     };
@@ -67,8 +77,8 @@ const MatchPage = () => {
     const handleSaveScores = async () => {
         const result = await addMatchScore(selectedMatch!.id, team1Score, team2Score, isOvertime);
         if (result.ok) {
-            console.log(result);
             handleCloseEnterScoresModal();
+            getMatches();
         }
     };
 
@@ -103,6 +113,25 @@ const MatchPage = () => {
                         </Form>
                     </Col>
                 </Row>
+                <Row className="mb-4">
+                    <Col>
+                        <div>
+                            <Button variant="secondary" onClick={() => setSelectedMatchRound(null)}>
+                                All Rounds
+                            </Button>
+                            {matchRounds.map((round, index) => (
+                                <Button
+                                    key={index}
+                                    variant={selectedMatchRound === round ? "primary" : "secondary"}
+                                    onClick={() => setSelectedMatchRound(round)}
+                                    className="ms-2"
+                                >
+                                    Round {round}
+                                </Button>
+                            ))}
+                        </div>
+                    </Col>
+                </Row>
                 <Row>
                     <Col>
                         <Table striped bordered hover>
@@ -110,6 +139,7 @@ const MatchPage = () => {
                             <tr>
                                 <th>ID</th>
                                 <th>Division</th>
+                                <th>Spielrunde</th>
                                 <th>Team1</th>
                                 <th>Team2</th>
                                 <th>Punktestand</th>
@@ -120,6 +150,7 @@ const MatchPage = () => {
                                 <tr key={index} onClick={() => handleOpenEnterScoresModal(match)}>
                                     <td>{match.id}</td>
                                     <td>{match.division.number}</td>
+                                    <td>{match.match_round.number}</td>
                                     <td>{match.team_1.name}</td>
                                     <td>{match.team_2.name}</td>
                                     <td>{match.team_1_points} - {match.team_2_points}</td>

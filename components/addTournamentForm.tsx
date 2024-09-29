@@ -11,9 +11,7 @@ const AddTournamentForm = () => {
         name: "",
         description: "",
         date: "",
-        sets: 0,
-        match_round_count: 0,
-        table_count: 0
+        sets: 0
     });
 
     const [showModal, setShowModal] = useState(false);
@@ -30,7 +28,7 @@ const AddTournamentForm = () => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        const response = await addNewTournament(formData.name, formData.description, formData.date, formData.sets, formData.match_round_count, formData.table_count);
+        const response = await addNewTournament(formData.name, formData.description, formData.date, formData.sets);
         if (!response.ok) {
             console.error("Error while creating tournament");
             return;
@@ -80,22 +78,6 @@ const AddTournamentForm = () => {
                                 <Form.Group controlId="sets" className="mb-3">
                                     <Form.Label>Sätze</Form.Label>
                                     <Form.Control type="number" name="sets" value={formData.sets}
-                                                  onChange={handleChange} required/>
-                                </Form.Group>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col md={6}>
-                                <Form.Group controlId="match_round_count" className="mb-3">
-                                    <Form.Label>Spielrunden</Form.Label>
-                                    <Form.Control type="number" name="match_round_count"
-                                                  value={formData.match_round_count} onChange={handleChange} required/>
-                                </Form.Group>
-                            </Col>
-                            <Col md={6}>
-                                <Form.Group controlId="table_count" className="mb-3">
-                                    <Form.Label>Anzahl Tische</Form.Label>
-                                    <Form.Control type="number" name="table_count" value={formData.table_count}
                                                   onChange={handleChange} required/>
                                 </Form.Group>
                             </Col>

@@ -15,7 +15,15 @@ export const getTeams = async (id: string) => {
         result.push(value as Team);
     });
 
-    result.sort((a, b) => b.wins - a.wins);
+    result.sort((a, b) => {
+        if (b.wins === a.wins) {
+            if (b.point_difference === a.point_difference) {
+                return b.points_received - a.points_received;
+            }
+            return b.point_difference - a.point_difference;
+        }
+        return b.wins - a.wins;
+    });
 
     return result;
 }

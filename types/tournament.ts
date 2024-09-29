@@ -9,6 +9,7 @@ export type Tournament = {
     match_round_count: number,
     description: string,
     table_count: number,
+    division_count: number,
     matches: Match[],
     tables: Table[],
     teams: Team[]
