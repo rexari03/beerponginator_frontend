@@ -19,13 +19,13 @@ const TournamentOverview: React.FC<TournamentOverviewProps> = ({
                                                                }) => {
     return (
         <Card className="mb-4">
-            <Card.Header as="h5">Tournament Overview</Card.Header>
+            <Card.Header as="h5">Turnierübersicht</Card.Header>
             <ListGroup variant="flush">
                 <ListGroup.Item><strong>Name:</strong> {name}</ListGroup.Item>
-                <ListGroup.Item><strong>Date:</strong> {date}</ListGroup.Item>
-                <ListGroup.Item><strong>Match Rounds:</strong> {matchRoundCount}</ListGroup.Item>
-                <ListGroup.Item><strong>Table Count:</strong> {tableCount}</ListGroup.Item>
-                <ListGroup.Item><strong>Division Count:</strong> {divisionCount}</ListGroup.Item>
+                <ListGroup.Item><strong>Datum:</strong> {date}</ListGroup.Item>
+                <ListGroup.Item><strong>Spieltag:</strong> {matchRoundCount}</ListGroup.Item>
+                <ListGroup.Item><strong>Anzahl Tische:</strong> {tableCount}</ListGroup.Item>
+                <ListGroup.Item><strong>Spielrunde:</strong> {divisionCount}</ListGroup.Item>
             </ListGroup>
         </Card>
     );

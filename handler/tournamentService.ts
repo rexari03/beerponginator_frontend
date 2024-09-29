@@ -25,9 +25,7 @@ export const addNewTournament = async (
     return response;
 }
 
-export const getTournament = async (
-    id: string
-) => {
+export const getTournament = async (id: string) => {
     const headers = {
         'Authorization': `Bearer ${process.env.NEXT_PUBLIC_AUTH_TOKEN}`,
     };
@@ -37,8 +35,13 @@ export const getTournament = async (
         mode: 'cors'
     });
     const data = await response.json();
-    return data as Tournament;
 
+    // Convert tables dictionary to an array
+    if (data.tables) {
+        data.tables = Object.values(data.tables);
+    }
+
+    return data as Tournament;
 }
 
 export const getTournaments = async () => {
@@ -61,7 +64,8 @@ export const updateTournament = async (
     name: string,
     date: string,
     matchRoundCount: number,
-    tableCount: number
+    tableCount: number,
+    divisionCount: number
 ) => {
     const headers = {
         'Authorization': `Bearer ${process.env.NEXT_PUBLIC_AUTH_TOKEN}`,
@@ -70,7 +74,8 @@ export const updateTournament = async (
         "name": name,
         "date": date,
         "match_round_count": matchRoundCount,
-        "table_count": tableCount
+        "table_count": tableCount,
+        "divisions_count": divisionCount
     });
 
     const response = await fetch(`https://beerpong.philipptrashman.dev/api/tournaments/${id}`, {

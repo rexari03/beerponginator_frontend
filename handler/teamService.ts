@@ -1,3 +1,5 @@
+import {Team} from "@/types/teams";
+
 export const addTeam = async (
     shown_id: string,
     name: string,
@@ -5,7 +7,7 @@ export const addTeam = async (
     description: string,
 ) => {
     const headers = {
-        'Authorization': `Bearer XongXina`,
+        'Authorization': `Bearer ${process.env.NEXT_PUBLIC_AUTH_TOKEN}`,
     };
     const body = JSON.stringify({
         "shown_id": shown_id,
@@ -21,4 +23,24 @@ export const addTeam = async (
         body
     });
     return response;
+}
+
+export const getTeamsByTournament = async (
+    tournament_id: string
+) => {
+    const headers = {
+        'Authorization': `Bearer ${process.env.NEXT_PUBLIC_AUTH_TOKEN}`,
+    };
+    const response = await fetch(`https://beerpong.philipptrashman.dev/api/tournaments/${tournament_id}/teams`, {
+        method: 'GET',
+        headers,
+        mode: 'cors'
+    });
+
+    const data = await response.json();
+    const result: Team[] = [];
+    Object.entries(data).map(([key, value]) => {
+        result.push(value as Team);
+    });
+    return result;
 }

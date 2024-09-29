@@ -104,7 +104,7 @@ const MatchPage = () => {
                             <Card.Body>
                                 <Form>
                                     <Form.Group controlId="divisionNumber" className="mb-3">
-                                        <Form.Label>Nach Division filtern</Form.Label>
+                                        <Form.Label>Nach Spielrunde filtern</Form.Label>
                                         <Form.Select
                                             value={divisionNumber}
                                             onChange={(e) => setDivisionNumber(e.target.value)}
@@ -143,7 +143,7 @@ const MatchPage = () => {
                                     onClick={() => setSelectedMatchRound(round)}
                                     className="ms-2 flex-grow-1"
                                 >
-                                    Runde {round}
+                                    Spieltag {round}
                                 </Button>
                             ))}
                         </div>
@@ -154,8 +154,8 @@ const MatchPage = () => {
                         <Table striped bordered hover responsive>
                             <thead>
                             <tr>
-                                <th>Division</th>
                                 <th>Spielrunde</th>
+                                <th>Spieltag</th>
                                 <th>Tisch</th>
                                 <th>Team1</th>
                                 <th>Team2</th>
@@ -166,7 +166,7 @@ const MatchPage = () => {
                             {filteredMatches.map((match, index) => (
                                 <tr key={index} onClick={() => handleOpenEnterScoresModal(match)}>
                                     <td>{match.division.number}</td>
-                                    <td>{match.match_round.number}</td>
+                                    <td>{match.match_round ? match.match_round.number : ""}</td>
                                     <td>{match.table.shown_id}</td>
                                     <td>{match.team_1.name} ({match.team_1.shown_id})</td>
                                     <td>{match.team_2.name} ({match.team_2.shown_id})</td>
