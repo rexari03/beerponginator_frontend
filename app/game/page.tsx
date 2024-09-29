@@ -26,7 +26,11 @@ export default function Page() {
     }, []);
 
     if (isLoading) {
-        return <Spinner animation="border"/>;
+        return (
+            <div className="d-flex justify-content-center align-items-center" style={{height: '100vh'}}>
+                <Spinner animation="border"/>
+            </div>
+        );
     }
 
     if (!session) {
@@ -40,7 +44,6 @@ export default function Page() {
                         <Table striped bordered hover>
                             <thead>
                             <tr>
-                                <th>ID</th>
                                 <th>Name</th>
                                 <th>Datum</th>
                             </tr>
@@ -48,7 +51,6 @@ export default function Page() {
                             <tbody>
                             {tournaments.map((tournament, index) => (
                                 <tr key={index} onClick={() => router.push(`/game/${tournament.id}`)}>
-                                    <td>{tournament.id}</td>
                                     <td>{tournament.name}</td>
                                     <td>{tournament.date}</td>
                                 </tr>

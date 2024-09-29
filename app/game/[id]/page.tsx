@@ -142,7 +142,7 @@ const TeamTable = () => {
             </Row>
             <Row>
                 <Col>
-                    <Table striped bordered hover>
+                    <Table striped bordered hover responsive>
                         <thead>
                         <tr>
                             <th>Platzierung</th>

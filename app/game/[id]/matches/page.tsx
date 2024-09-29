@@ -115,8 +115,9 @@ const MatchPage = () => {
                 </Row>
                 <Row className="mb-4">
                     <Col>
-                        <div>
-                            <Button variant="secondary" onClick={() => setSelectedMatchRound(null)}>
+                        <div className="d-flex flex-nowrap">
+                            <Button variant="secondary" onClick={() => setSelectedMatchRound(null)}
+                                    className="flex-grow-1">
                                 All Rounds
                             </Button>
                             {matchRounds.map((round, index) => (
@@ -124,7 +125,7 @@ const MatchPage = () => {
                                     key={index}
                                     variant={selectedMatchRound === round ? "primary" : "secondary"}
                                     onClick={() => setSelectedMatchRound(round)}
-                                    className="ms-2"
+                                    className="ms-2 flex-grow-1"
                                 >
                                     Round {round}
                                 </Button>
@@ -134,7 +135,7 @@ const MatchPage = () => {
                 </Row>
                 <Row>
                     <Col>
-                        <Table striped bordered hover>
+                        <Table striped bordered hover responsive>
                             <thead>
                             <tr>
                                 <th>ID</th>
