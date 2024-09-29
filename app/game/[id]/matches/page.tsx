@@ -49,9 +49,12 @@ const MatchPage = () => {
         }
 
         if (searchQuery) {
+            const regex = new RegExp(`^${searchQuery}$`, 'i');
             filtered = filtered.filter(match =>
                 match.team_1.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                match.team_2.name.toLowerCase().includes(searchQuery.toLowerCase())
+                match.team_2.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                regex.test(String(match.team_1.shown_id)) ||
+                regex.test(String(match.team_2.shown_id))
             );
         }
 
@@ -102,10 +105,10 @@ const MatchPage = () => {
                                 </Form.Select>
                             </Form.Group>
                             <Form.Group controlId="searchQuery" className="mt-3">
-                                <Form.Label>Search by Team Name</Form.Label>
+                                <Form.Label>Search by Team Name or Shown ID</Form.Label>
                                 <Form.Control
                                     type="text"
-                                    placeholder="Enter team name"
+                                    placeholder="Enter team name or shown ID"
                                     value={searchQuery}
                                     onChange={(e) => setSearchQuery(e.target.value)}
                                 />
@@ -152,8 +155,8 @@ const MatchPage = () => {
                                     <td>{match.id}</td>
                                     <td>{match.division.number}</td>
                                     <td>{match.match_round.number}</td>
-                                    <td>{match.team_1.name}</td>
-                                    <td>{match.team_2.name}</td>
+                                    <td>{match.team_1.name} ({match.team_1.shown_id})</td>
+                                    <td>{match.team_2.name} ({match.team_2.shown_id})</td>
                                     <td>{match.team_1_points} - {match.team_2_points}</td>
                                 </tr>
                             ))}

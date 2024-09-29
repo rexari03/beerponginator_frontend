@@ -81,7 +81,10 @@ const TeamTable = () => {
         getTournamentDetails();
     }
 
-    const filteredTeams = teams.filter(team => team.name.toLowerCase().includes(searchQuery.toLowerCase()));
+    const filteredTeams = teams.filter(team => {
+        const regex = new RegExp(`^${searchQuery}$`, 'i');
+        return team.name.toLowerCase().includes(searchQuery.toLowerCase()) || regex.test(String(team.shown_id));
+    });
 
     if (isLoading) {
         return (
@@ -134,7 +137,7 @@ const TeamTable = () => {
                 <Col>
                     <Form.Control
                         type="text"
-                        placeholder="Search by team name"
+                        placeholder="Nach Teamnamen oder ID suchen"
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                     />
