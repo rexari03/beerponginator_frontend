@@ -49,9 +49,12 @@ const MatchPage = () => {
         }
 
         if (searchQuery) {
+            const regex = new RegExp(`^${searchQuery}$`, 'i');
             filtered = filtered.filter(match =>
                 match.team_1.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                match.team_2.name.toLowerCase().includes(searchQuery.toLowerCase())
+                match.team_2.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                regex.test(String(match.team_1.shown_id)) ||
+                regex.test(String(match.team_2.shown_id))
             );
         }
 
@@ -102,10 +105,10 @@ const MatchPage = () => {
                                 </Form.Select>
                             </Form.Group>
                             <Form.Group controlId="searchQuery" className="mt-3">
-                                <Form.Label>Search by Team Name</Form.Label>
+                                <Form.Label>Search by Team Name or Shown ID</Form.Label>
                                 <Form.Control
                                     type="text"
-                                    placeholder="Enter team name"
+                                    placeholder="Enter team name or shown ID"
                                     value={searchQuery}
                                     onChange={(e) => setSearchQuery(e.target.value)}
                                 />
@@ -115,8 +118,9 @@ const MatchPage = () => {
                 </Row>
                 <Row className="mb-4">
                     <Col>
-                        <div>
-                            <Button variant="secondary" onClick={() => setSelectedMatchRound(null)}>
+                        <div className="d-flex flex-nowrap">
+                            <Button variant="secondary" onClick={() => setSelectedMatchRound(null)}
+                                    className="flex-grow-1">
                                 All Rounds
                             </Button>
                             {matchRounds.map((round, index) => (
@@ -124,7 +128,7 @@ const MatchPage = () => {
                                     key={index}
                                     variant={selectedMatchRound === round ? "primary" : "secondary"}
                                     onClick={() => setSelectedMatchRound(round)}
-                                    className="ms-2"
+                                    className="ms-2 flex-grow-1"
                                 >
                                     Round {round}
                                 </Button>
@@ -134,7 +138,7 @@ const MatchPage = () => {
                 </Row>
                 <Row>
                     <Col>
-                        <Table striped bordered hover>
+                        <Table striped bordered hover responsive>
                             <thead>
                             <tr>
                                 <th>ID</th>
@@ -151,8 +155,8 @@ const MatchPage = () => {
                                     <td>{match.id}</td>
                                     <td>{match.division.number}</td>
                                     <td>{match.match_round.number}</td>
-                                    <td>{match.team_1.name}</td>
-                                    <td>{match.team_2.name}</td>
+                                    <td>{match.team_1.name} ({match.team_1.shown_id})</td>
+                                    <td>{match.team_2.name} ({match.team_2.shown_id})</td>
                                     <td>{match.team_1_points} - {match.team_2_points}</td>
                                 </tr>
                             ))}
