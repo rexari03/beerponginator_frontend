@@ -31,7 +31,7 @@ export const addMatchScore = async (
         "match_id": match_id,
         "team_1_points": team1_score,
         "team_2_points": team2_score,
-        "time_play": time_play
+        "timeplay": time_play
     });
 
     const response = await fetch(`https://beerpong.philipptrashman.dev/api/matches/${match_id}`, {
@@ -41,5 +41,37 @@ export const addMatchScore = async (
         body
     });
     return response;
+}
 
+export const addMatch = async (
+    tournament_id: string,
+    table_id: string,
+    team_1_id: string,
+    team_2_id: string,
+    division_id: string,
+    match_round_id: string
+) => {
+    const headers = {
+        'Authorization': `Bearer ${process.env.NEXT_PUBLIC_AUTH_TOKEN}`,
+    };
+
+    const body = JSON.stringify({
+        "tournament_id": tournament_id,
+        "table_id": table_id,
+        "team_1_id": team_1_id,
+        "team_2_id": team_2_id,
+        "division_id": division_id,
+        "match_round_id": match_round_id,
+    });
+
+    const response = await fetch('https://beerpong.philipptrashman.dev/api/matches', {
+        method: 'POST',
+        headers,
+        mode: 'cors',
+        body
+    });
+    if (response.ok) {
+        return await response.json();
+    }
+    throw new Error(response.statusText);
 }

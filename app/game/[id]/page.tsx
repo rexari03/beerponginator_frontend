@@ -46,7 +46,7 @@ const TeamTable = () => {
         setTournamentDate(tournamentDetails.date);
         setMatchRoundCount(tournamentDetails.match_round_count ?? 0);
         setTableCount(tournamentDetails.table_count ?? 0);
-        setDivisionCount(tournamentDetails.division_count ?? 0);
+        setDivisionCount(tournamentDetails.divisions_count ?? 0);
     }
 
     useEffect(() => {
@@ -75,7 +75,7 @@ const TeamTable = () => {
     }
 
     const handleCloseEditTournamentModal = async () => {
-        await updateTournament(params.id as string, tournamentName, tournamentDate, matchRoundCount, tableCount);
+        await updateTournament(params.id as string, tournamentName, tournamentDate, matchRoundCount, tableCount, divisionCount);
 
         setShowEditTournamentModal(false);
         getTournamentDetails();
@@ -240,7 +240,7 @@ const TeamTable = () => {
                             />
                         </Form.Group>
                         <Form.Group controlId="formTournamentMatchRoundCount" className="mt-3">
-                            <Form.Label>Spielrunden</Form.Label>
+                            <Form.Label>Anzahl Spieltage</Form.Label>
                             <Form.Control
                                 type="number"
                                 value={matchRoundCount}
@@ -253,6 +253,14 @@ const TeamTable = () => {
                                 type="number"
                                 value={tableCount}
                                 onChange={(e) => setTableCount(Number(e.target.value))}
+                            />
+                        </Form.Group>
+                        <Form.Group controlId="formTournamentDivisionCount" className="mt-3">
+                            <Form.Label>Anzahl Runden</Form.Label>
+                            <Form.Control
+                                type="number"
+                                value={divisionCount}
+                                onChange={(e) => setDivisionCount(Number(e.target.value))}
                             />
                         </Form.Group>
                     </Form>
