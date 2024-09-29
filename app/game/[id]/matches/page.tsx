@@ -2,7 +2,7 @@
 
 import {useEffect, useState} from "react";
 import {addMatchScore, getAllMatches} from "@/handler/matchService";
-import {useParams} from "next/navigation";
+import {useParams, useRouter} from "next/navigation";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Table from "react-bootstrap/Table";
@@ -16,6 +16,7 @@ import Link from "next/link";
 
 const MatchPage = () => {
     const params = useParams();
+    const router = useRouter();
     const [matches, setMatches] = useState<Match[]>([]);
     const [filteredMatches, setFilteredMatches] = useState<Match[]>([]);
     const [divisionNumber, setDivisionNumber] = useState<string>("");
@@ -87,14 +88,23 @@ const MatchPage = () => {
         }
     };
 
+    const handleNavigate = () => {
+        router.push(`/game/${params.id}`);
+    };
+
     return (
         <div>
             <h1 className={"text-center mb-4"}>Match Page</h1>
             <Container>
                 <Row className="mb-4">
                     <Col>
+                        <Button variant="primary" className="w-100" onClick={handleNavigate}>
+                            Zur Tabelle zurück
+                        </Button>
+                    </Col>
+                    <Col>
                         <Link href={`/game/${params.id}/add-match`} passHref>
-                            <Button variant="success" className="w-100">Spiel hinzufügen</Button>
+                            <Button variant="primary" className="w-100">Spiel hinzufügen</Button>
                         </Link>
                     </Col>
                 </Row>
@@ -109,7 +119,7 @@ const MatchPage = () => {
                                             value={divisionNumber}
                                             onChange={(e) => setDivisionNumber(e.target.value)}
                                         >
-                                            <option value="">Alle Divisionen</option>
+                                            <option value="">Alle Spielrunden</option>
                                             {divisionNumbers.map((number, index) => (
                                                 <option key={index} value={number}>{number}</option>
                                             ))}
@@ -119,7 +129,7 @@ const MatchPage = () => {
                                         <Form.Label>Nach Teamnamen oder ID suchen</Form.Label>
                                         <Form.Control
                                             type="text"
-                                            placeholder="Enter team name or shown ID"
+                                            placeholder="Teamnamen oder ID eingeben"
                                             value={searchQuery}
                                             onChange={(e) => setSearchQuery(e.target.value)}
                                         />
