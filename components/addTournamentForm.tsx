@@ -40,7 +40,7 @@ const AddTournamentForm = () => {
 
     const handleClose = () => {
         setShowModal(false);
-        router.push(`/auth/signin`);
+        router.push(`/game`);
 
     }
 
