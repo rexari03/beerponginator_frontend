@@ -112,13 +112,10 @@ const TeamTable = () => {
             </Row>
             <Row className="mb-4">
                 <Col className="d-flex justify-content-center">
-                    <Button variant="primary" onClick={handleAddPlayer} className="me-2">Add Player</Button>
-                    <Button variant="secondary" onClick={handleEditTournament} className="me-2">Edit Tournament</Button>
+                    <Button variant="primary" onClick={handleAddPlayer} className="me-2">Team hinzufügen</Button>
+                    <Button variant="primary" onClick={handleEditTournament} className="me-2">Bearbeiten</Button>
                     <Link href={`/game/${params.id}/matches`} passHref>
-                        <Button variant="secondary" className="me-2">Enter Scores</Button>
-                    </Link>
-                    <Link href={`/game/${params.id}/add-match`} passHref>
-                        <Button variant="success">Add Match</Button>
+                        <Button variant="primary" className="me-2">Matches</Button>
                     </Link>
                 </Col>
             </Row>
