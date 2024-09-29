@@ -10,7 +10,9 @@ import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
+import Card from 'react-bootstrap/Card';
 import {Match} from "@/types/match";
+import Link from "next/link";
 
 const MatchPage = () => {
     const params = useParams();
@@ -87,33 +89,44 @@ const MatchPage = () => {
 
     return (
         <div>
-            <h1>Match Page</h1>
+            <h1 className={"text-center mb-4"}>Match Page</h1>
             <Container>
                 <Row className="mb-4">
                     <Col>
-                        <Form>
-                            <Form.Group controlId="divisionNumber">
-                                <Form.Label>Filter by Division Number</Form.Label>
-                                <Form.Select
-                                    value={divisionNumber}
-                                    onChange={(e) => setDivisionNumber(e.target.value)}
-                                >
-                                    <option value="">All Divisions</option>
-                                    {divisionNumbers.map((number, index) => (
-                                        <option key={index} value={number}>{number}</option>
-                                    ))}
-                                </Form.Select>
-                            </Form.Group>
-                            <Form.Group controlId="searchQuery" className="mt-3">
-                                <Form.Label>Search by Team Name or Shown ID</Form.Label>
-                                <Form.Control
-                                    type="text"
-                                    placeholder="Enter team name or shown ID"
-                                    value={searchQuery}
-                                    onChange={(e) => setSearchQuery(e.target.value)}
-                                />
-                            </Form.Group>
-                        </Form>
+                        <Link href={`/game/${params.id}/add-match`} passHref>
+                            <Button variant="success" className="w-100">Spiel hinzufügen</Button>
+                        </Link>
+                    </Col>
+                </Row>
+                <Row className="mb-4">
+                    <Col>
+                        <Card className="shadow">
+                            <Card.Body>
+                                <Form>
+                                    <Form.Group controlId="divisionNumber" className="mb-3">
+                                        <Form.Label>Nach Division filtern</Form.Label>
+                                        <Form.Select
+                                            value={divisionNumber}
+                                            onChange={(e) => setDivisionNumber(e.target.value)}
+                                        >
+                                            <option value="">Alle Divisionen</option>
+                                            {divisionNumbers.map((number, index) => (
+                                                <option key={index} value={number}>{number}</option>
+                                            ))}
+                                        </Form.Select>
+                                    </Form.Group>
+                                    <Form.Group controlId="searchQuery" className="mb-3">
+                                        <Form.Label>Nach Teamnamen oder ID suchen</Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            placeholder="Enter team name or shown ID"
+                                            value={searchQuery}
+                                            onChange={(e) => setSearchQuery(e.target.value)}
+                                        />
+                                    </Form.Group>
+                                </Form>
+                            </Card.Body>
+                        </Card>
                     </Col>
                 </Row>
                 <Row className="mb-4">
@@ -121,7 +134,7 @@ const MatchPage = () => {
                         <div className="d-flex flex-nowrap">
                             <Button variant="secondary" onClick={() => setSelectedMatchRound(null)}
                                     className="flex-grow-1">
-                                All Rounds
+                                Alle Runden
                             </Button>
                             {matchRounds.map((round, index) => (
                                 <Button
@@ -130,7 +143,7 @@ const MatchPage = () => {
                                     onClick={() => setSelectedMatchRound(round)}
                                     className="ms-2 flex-grow-1"
                                 >
-                                    Round {round}
+                                    Runde {round}
                                 </Button>
                             ))}
                         </div>
@@ -141,9 +154,9 @@ const MatchPage = () => {
                         <Table striped bordered hover responsive>
                             <thead>
                             <tr>
-                                <th>ID</th>
                                 <th>Division</th>
                                 <th>Spielrunde</th>
+                                <th>Tisch</th>
                                 <th>Team1</th>
                                 <th>Team2</th>
                                 <th>Punktestand</th>
@@ -152,9 +165,9 @@ const MatchPage = () => {
                             <tbody>
                             {filteredMatches.map((match, index) => (
                                 <tr key={index} onClick={() => handleOpenEnterScoresModal(match)}>
-                                    <td>{match.id}</td>
                                     <td>{match.division.number}</td>
                                     <td>{match.match_round.number}</td>
+                                    <td>{match.table.shown_id}</td>
                                     <td>{match.team_1.name} ({match.team_1.shown_id})</td>
                                     <td>{match.team_2.name} ({match.team_2.shown_id})</td>
                                     <td>{match.team_1_points} - {match.team_2_points}</td>
@@ -169,7 +182,7 @@ const MatchPage = () => {
             {/* Enter Scores Modal */}
             <Modal show={showEnterScoresModal} onHide={handleCloseEnterScoresModal}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Enter Scores</Modal.Title>
+                    <Modal.Title>Punkte eingeben</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     {selectedMatch && (
@@ -203,10 +216,10 @@ const MatchPage = () => {
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleCloseEnterScoresModal}>
-                        Close
+                        Schließen
                     </Button>
                     <Button variant="primary" onClick={handleSaveScores}>
-                        Save Changes
+                        Speichern
                     </Button>
                 </Modal.Footer>
             </Modal>

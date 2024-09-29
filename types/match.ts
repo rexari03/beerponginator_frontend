@@ -1,4 +1,5 @@
 import {Team} from "@/types/teams";
+import {Table} from "@/types/table";
 
 export type Match = {
     id: string;
@@ -11,6 +12,7 @@ export type Match = {
     team_1_points: number;
     team_2_points: number;
     match_round: MatchRound;
+    table: Table;
 }
 
 type MatchRound = {
