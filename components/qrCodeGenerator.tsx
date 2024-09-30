@@ -12,7 +12,7 @@ interface Props {
 
 const RandomQRCode = (props: Props) => {
     const [qrValue, setQrValue] = useState<string>('');
-    const baseUrl = "https://beerponginator-visualizer.app/";
+    const baseUrl = "https://beerponginator-visualizer.vercel.app/";
 
     useEffect(() => {
         setQrValue(baseUrl + props.id);
