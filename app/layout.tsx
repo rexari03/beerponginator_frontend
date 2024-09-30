@@ -6,6 +6,7 @@ import NavBar from "@/components/navbar";
 import SessionWrapper from "@/components/sessionWrapper";
 import {TournamentProvider} from "@/context/tournamentProvider";
 import {Analytics} from "@vercel/analytics/react"
+import {SpeedInsights} from "@vercel/speed-insights/next"
 
 const geistSans = localFont({
     src: "./game/fonts/GeistVF.woff",
@@ -36,6 +37,7 @@ export default function RootLayout({
                 <NavBar/>
                 {children}
                 <Analytics/>
+                <SpeedInsights/>
                 </body>
                 </html>
             </TournamentProvider>
