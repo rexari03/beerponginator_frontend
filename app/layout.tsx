@@ -1,7 +1,7 @@
 import type {Metadata} from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootswatch/dist/darkly/bootstrap.min.css';
 import NavBar from "@/components/navbar";
 import SessionWrapper from "@/components/sessionWrapper";
 import {TournamentProvider} from "@/context/tournamentProvider";

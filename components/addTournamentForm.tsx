@@ -59,26 +59,10 @@ const AddTournamentForm = () => {
                                 </Form.Group>
                             </Col>
                             <Col md={6}>
-                                <Form.Group controlId="description" className="mb-3">
-                                    <Form.Label>Beschreibung</Form.Label>
-                                    <Form.Control type="text" name="description" value={formData.description}
-                                                  onChange={handleChange}/>
-                                </Form.Group>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col md={6}>
                                 <Form.Group controlId="date" className="mb-3">
                                     <Form.Label>Datum</Form.Label>
                                     <Form.Control type="date" name="date" value={formData.date} onChange={handleChange}
                                                   required/>
-                                </Form.Group>
-                            </Col>
-                            <Col md={6}>
-                                <Form.Group controlId="sets" className="mb-3">
-                                    <Form.Label>Sätze</Form.Label>
-                                    <Form.Control type="number" name="sets" value={formData.sets}
-                                                  onChange={handleChange} required/>
                                 </Form.Group>
                             </Col>
                         </Row>

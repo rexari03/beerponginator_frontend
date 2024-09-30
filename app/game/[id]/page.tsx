@@ -17,6 +17,7 @@ import Link from 'next/link';
 import {addTeam} from "@/handler/teamService";
 import {getTournament, updateTournament} from "@/handler/tournamentService";
 import TournamentOverview from "@/components/tournamentOverview";
+import 'bootswatch/dist/darkly/bootstrap.min.css';
 
 const TeamTable = () => {
     const [teams, setTeams] = useState<Team[]>([]);

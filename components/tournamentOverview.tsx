@@ -11,15 +11,15 @@ interface TournamentOverviewProps {
 }
 
 const TournamentOverview: React.FC<TournamentOverviewProps> = ({
-                                                                   name,
-                                                                   date,
-                                                                   matchRoundCount,
-                                                                   tableCount,
-                                                                   divisionCount
-                                                               }) => {
+    name,
+    date,
+    matchRoundCount,
+    tableCount,
+    divisionCount
+}) => {
     return (
-        <Card className="mb-4">
-            <Card.Header as="h5">Turnierübersicht</Card.Header>
+        <Card className="mb-4 shadow-sm border-0">
+            <Card.Header as="h5" className="bg-secondary text-white">Turnierübersicht</Card.Header>
             <ListGroup variant="flush">
                 <ListGroup.Item><strong>Name:</strong> {name}</ListGroup.Item>
                 <ListGroup.Item><strong>Datum:</strong> {date}</ListGroup.Item>

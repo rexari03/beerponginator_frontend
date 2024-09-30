@@ -1,8 +1,9 @@
 "use client"
 
-import React, {useEffect, useState} from 'react';
-import {QRCodeSVG} from 'qrcode.react';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import React, { useEffect, useState } from 'react';
+import { QRCodeSVG } from 'qrcode.react';
+import Card from 'react-bootstrap/Card';
+import 'bootswatch/dist/darkly/bootstrap.min.css';
 
 interface Props {
     id: string;
@@ -10,18 +11,19 @@ interface Props {
 
 const RandomQRCode = (props: Props) => {
     const [qrValue, setQrValue] = useState<string>('');
-    const baseUrl = "https://example.com/";
+    const baseUrl = "https://beerponginator-visualizer.app/";
 
     useEffect(() => {
         setQrValue(baseUrl + props.id);
-    }, []);
+    }, [props.id]);
 
     return (
-        <div
-            className="d-flex flex-column align-items-center justify-content-center fixed-size bg-light p-4 rounded shadow">
-            {qrValue && <QRCodeSVG value={qrValue} className="mb-3" style={{width: '200px', height: '200px'}}/>}
-            <p className="h5 text-dark">TurnierID: {qrValue}</p>
-        </div>
+        <Card bg="dark" text="white" className="text-center p-4 m-4 shadow">
+            <Card.Body>
+                {qrValue && <QRCodeSVG value={qrValue} className="mb-3" style={{ width: '200px', height: '200px' }} />}
+                <Card.Text className="h5">TurnierID: {qrValue}</Card.Text>
+            </Card.Body>
+        </Card>
     );
 };
 
