@@ -5,6 +5,7 @@ import 'bootswatch/dist/darkly/bootstrap.min.css';
 import NavBar from "@/components/navbar";
 import SessionWrapper from "@/components/sessionWrapper";
 import {TournamentProvider} from "@/context/tournamentProvider";
+import {Analytics} from "@vercel/analytics/react"
 
 const geistSans = localFont({
     src: "./game/fonts/GeistVF.woff",
@@ -34,6 +35,7 @@ export default function RootLayout({
                 <body className={`${geistSans.variable} ${geistMono.variable}`}>
                 <NavBar/>
                 {children}
+                <Analytics/>
                 </body>
                 </html>
             </TournamentProvider>
