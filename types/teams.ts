@@ -1,5 +1,6 @@
 import {Tournament} from "@/types/tournament";
 import {Player} from "@/types/player";
+import {Match} from "@/types/match";
 
 export type Team = {
     id: string,
@@ -7,6 +8,7 @@ export type Team = {
     name: string
     players: Player[],
     tournament: Tournament,
+    matches: Match[],
     wins: number,
     point_difference: number,
     points_made: number,
