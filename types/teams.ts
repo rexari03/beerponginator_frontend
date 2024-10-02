@@ -5,7 +5,8 @@ import {Match} from "@/types/match";
 export type Team = {
     id: string,
     shown_id: string,
-    name: string
+    name: string,
+    description: string,
     players: Player[],
     tournament: Tournament,
     matches: Match[],

@@ -44,3 +44,26 @@ export const getTeamsByTournament = async (
     });
     return result;
 }
+
+export const updateTeam = async (
+    id: string,
+    shown_id: string,
+    name: string,
+    description?: string
+) => {
+    const headers = {
+        'Authorization': `Bearer ${process.env.NEXT_PUBLIC_AUTH_TOKEN}`,
+    };
+    const body = JSON.stringify({
+        "shown_id": shown_id,
+        "name": name,
+        "description": description,
+    });
+
+    return await fetch(`https://beerpong.philipptrashman.dev/api/teams/${id}`, {
+        method: 'PUT',
+        headers,
+        mode: 'cors',
+        body
+    });
+}

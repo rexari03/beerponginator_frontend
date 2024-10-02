@@ -14,7 +14,7 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Link from 'next/link';
-import {addTeam} from "@/handler/teamService";
+import {addTeam, updateTeam} from "@/handler/teamService";
 import {getTournament, updateTournament} from "@/handler/tournamentService";
 import TournamentOverview from "@/components/tournamentOverview";
 import 'bootswatch/dist/darkly/bootstrap.min.css';
@@ -24,6 +24,7 @@ const TeamTable = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [showAddPlayerModal, setShowAddPlayerModal] = useState(false);
     const [showEditTournamentModal, setShowEditTournamentModal] = useState(false);
+    const [showEditTeamModal, setShowEditTeamModal] = useState(false);
     const [visibleId, setVisibleId] = useState('');
     const [teamName, setTeamName] = useState('');
     const [description, setDescription] = useState('');
@@ -33,6 +34,8 @@ const TeamTable = () => {
     const [tableCount, setTableCount] = useState(0);
     const [divisionCount, setDivisionCount] = useState(0);
     const [searchQuery, setSearchQuery] = useState('');
+    const [selectedTeam, setSelectedTeam] = useState<Team | null>(null);
+    const [shownId, setShownId] = useState('');
     const params = useParams();
 
     const fetchTable = async () => {
@@ -67,6 +70,14 @@ const TeamTable = () => {
         setShowEditTournamentModal(true);
     };
 
+    const handleEditTeam = (team: Team) => {
+        setSelectedTeam(team);
+        setTeamName(team.name);
+        setDescription(team.description);
+        setShownId(team.shown_id);
+        setShowEditTeamModal(true);
+    };
+
     const handleCloseAddPlayerModal = async () => {
         const response = await addTeam(visibleId, teamName, params.id as string, description);
         if (response.ok) {
@@ -80,6 +91,18 @@ const TeamTable = () => {
 
         setShowEditTournamentModal(false);
         getTournamentDetails();
+    }
+
+    const handleCloseEditTeamModal = async () => {
+        if (selectedTeam) {
+            const response = await updateTeam(selectedTeam.id, shownId, teamName, description);
+            if (response.ok) {
+                setShowEditTeamModal(false);
+                fetchTable();
+            } else {
+                console.error('Error updating team');
+            }
+        }
     }
 
     const filteredTeams = teams.filter(team => {
@@ -156,7 +179,7 @@ const TeamTable = () => {
                         </thead>
                         <tbody>
                         {filteredTeams.map((team) => (
-                            <tr key={team.id}>
+                            <tr key={team.id} onClick={() => handleEditTeam(team)}>
                                 <td>{team.originalIndex}</td>
                                 <td>{team.shown_id}</td>
                                 <td>{team.name}</td>
@@ -271,6 +294,52 @@ const TeamTable = () => {
                         Close
                     </Button>
                     <Button variant="primary" onClick={handleCloseEditTournamentModal}>
+                        Save Changes
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+
+            {/* Edit Team Modal */}
+            <Modal show={showEditTeamModal} onHide={() => setShowEditTeamModal(false)}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Edit Team</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <Form>
+                        <Form.Group controlId="formEditTeamName">
+                            <Form.Label>Teamname</Form.Label>
+                            <Form.Control
+                                type="text"
+                                placeholder="Teamnamen eingeben"
+                                value={teamName}
+                                onChange={(e) => setTeamName(e.target.value)}
+                            />
+                        </Form.Group>
+                        <Form.Group controlId="formEditTeamDescription" className="mt-3">
+                            <Form.Label>Beschreibung</Form.Label>
+                            <Form.Control
+                                type="text"
+                                placeholder="Beschreibung eingeben"
+                                value={description}
+                                onChange={(e) => setDescription(e.target.value)}
+                            />
+                        </Form.Group>
+                        <Form.Group controlId="formEditTeamShownId" className="mt-3">
+                            <Form.Label>Sichtbare ID</Form.Label>
+                            <Form.Control
+                                type="text"
+                                placeholder="Gebe sichtbare ID ein"
+                                value={shownId}
+                                onChange={(e) => setShownId(e.target.value)}
+                            />
+                        </Form.Group>
+                    </Form>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={() => setShowEditTeamModal(false)}>
+                        Close
+                    </Button>
+                    <Button variant="primary" onClick={handleCloseEditTeamModal}>
                         Save Changes
                     </Button>
                 </Modal.Footer>
