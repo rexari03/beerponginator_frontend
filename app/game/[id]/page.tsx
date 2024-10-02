@@ -14,7 +14,7 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Link from 'next/link';
-import {addTeam, updateTeam} from "@/handler/teamService";
+import {addTeam, updateTeam, deleteTeam} from "@/handler/teamService";
 import {getTournament, updateTournament} from "@/handler/tournamentService";
 import TournamentOverview from "@/components/tournamentOverview";
 import 'bootswatch/dist/darkly/bootstrap.min.css';
@@ -25,6 +25,7 @@ const TeamTable = () => {
     const [showAddPlayerModal, setShowAddPlayerModal] = useState(false);
     const [showEditTournamentModal, setShowEditTournamentModal] = useState(false);
     const [showEditTeamModal, setShowEditTeamModal] = useState(false);
+    const [showDeleteConfirmationModal, setShowDeleteConfirmationModal] = useState(false);
     const [visibleId, setVisibleId] = useState('');
     const [teamName, setTeamName] = useState('');
     const [description, setDescription] = useState('');
@@ -101,6 +102,21 @@ const TeamTable = () => {
                 fetchTable();
             } else {
                 console.error('Error updating team');
+                console.error(response.statusText);
+            }
+        }
+    }
+
+    const handleDeleteTeam = async () => {
+        if (selectedTeam) {
+            const response = await deleteTeam(selectedTeam.id);
+            if (response.ok) {
+                setShowDeleteConfirmationModal(false);
+                setShowEditTeamModal(false);
+                fetchTable();
+            } else {
+                console.error('Error deleting team');
+                console.error(response.statusText);
             }
         }
     }
@@ -341,6 +357,27 @@ const TeamTable = () => {
                     </Button>
                     <Button variant="primary" onClick={handleCloseEditTeamModal}>
                         Save Changes
+                    </Button>
+                    <Button variant="danger" onClick={() => setShowDeleteConfirmationModal(true)}>
+                        Delete Team
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+
+            {/* Delete Confirmation Modal */}
+            <Modal show={showDeleteConfirmationModal} onHide={() => setShowDeleteConfirmationModal(false)}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Confirm Delete</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    Are you sure you want to delete this team?
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={() => setShowDeleteConfirmationModal(false)}>
+                        Cancel
+                    </Button>
+                    <Button variant="danger" onClick={handleDeleteTeam}>
+                        Delete
                     </Button>
                 </Modal.Footer>
             </Modal>

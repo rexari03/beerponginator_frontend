@@ -67,3 +67,16 @@ export const updateTeam = async (
         body
     });
 }
+
+export const deleteTeam = async (
+    id: string
+) => {
+    const headers = {
+        'Authorization': `Bearer ${process.env.NEXT_PUBLIC_AUTH_TOKEN}`,
+    };
+    return await fetch(`https://beerpong.philipptrashman.dev/api/teams/${id}`, {
+        method: 'DELETE',
+        headers,
+        mode: 'cors'
+    });
+}
