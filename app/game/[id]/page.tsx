@@ -15,7 +15,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Link from 'next/link';
 import {addTeam, updateTeam, deleteTeam} from "@/handler/teamService";
-import {getTournament, updateTournament} from "@/handler/tournamentService";
+import {getTournament, updateTournament, generateTournamentSchedule} from "@/handler/tournamentService";
 import TournamentOverview from "@/components/tournamentOverview";
 import 'bootswatch/dist/darkly/bootstrap.min.css';
 
@@ -121,6 +121,11 @@ const TeamTable = () => {
         }
     }
 
+    const generateTournamentScheduleButton = async (tournamentId: string) => {
+        await generateTournamentSchedule(tournamentId);
+        fetchTable();
+    }
+
     const filteredTeams = teams.filter(team => {
         const regex = new RegExp(`^${searchQuery}$`, 'i');
         return team.name.toLowerCase().includes(searchQuery.toLowerCase()) || regex.test(String(team.shown_id));
@@ -157,6 +162,7 @@ const TeamTable = () => {
                     <Link href={`/game/${params.id}/matches`} passHref>
                         <Button variant="primary" className="me-2">Matches</Button>
                     </Link>
+                    <Button variant="primary" onClick={() => generateTournamentScheduleButton(params.id as string)}>Matchplan generieren</Button>
                 </Col>
             </Row>
             <Row className="mb-4">

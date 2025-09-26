@@ -89,3 +89,18 @@ export const updateTournament = async (
     }
     throw new Error(response.statusText);
 }
+
+export const generateTournamentSchedule = async (id: string) => {
+    const headers = {
+        'Authorization': `Bearer ${process.env.NEXT_PUBLIC_AUTH_TOKEN}`,
+    };
+    const response = await fetch(`https://beerpong.philipptrashman.dev/api/tournaments/${id}/matchplan`, {
+        method: 'POST',
+        headers,
+        mode: 'cors'
+    });
+    if (response.ok) {
+        return await response.json();
+    }
+    throw new Error(response.statusText);
+}
